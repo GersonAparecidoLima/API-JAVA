@@ -5,22 +5,25 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Scanner;
 
 public class PrincipalComBusca {
 
-    public static void main (String[] args) throws IOException, InterruptedException{
-     
-    	   HttpClient client = HttpClient.newHttpClient();
-    	   HttpRequest request = HttpRequest.newBuilder()
-    	         .uri(URI.create("http://www.omdbapi.com/?t=matrix&apikey=c727e294"))
-    	         .build();
+	public static void main(String[] args) throws IOException, InterruptedException {
 
-    	// O próximo passo para ver o resultado da API:
-           HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-           
-           System.out.println(response.body());
-    	   
-    	   
-    }	
+		Scanner leitura = new Scanner(System.in);
+		System.out.println("Digite um filme para busca: ");
+		var busca = leitura.nextLine();
+
+		HttpClient client = HttpClient.newHttpClient();
+		HttpRequest request = HttpRequest.newBuilder()
+				.uri(URI.create("http://www.omdbapi.com/?t=matrix&apikey=4444")).build();
+
+		// O próximo passo para ver o resultado da API:
+		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+		System.out.println(response.body());
+
+	}	
 	
 }
