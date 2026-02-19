@@ -7,9 +7,12 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Scanner;
 
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import br.com.alura.screenmatch.modelos.Titulo;
+import br.com.alura.screenmatch.modelos.TituloOmdb;
 
 public class PrincipalComBusca {
 
@@ -18,7 +21,7 @@ public class PrincipalComBusca {
 		Scanner leitura = new Scanner(System.in);
 		System.out.println("Digite um filme para busca: ");
 		var busca = leitura.nextLine();
-		String endereco = "https://www.omdbapi.com/?t=" + busca + "&apikey=123";
+		String endereco = "https://www.omdbapi.com/?t=" + busca + "&apikey=c727e294";
 
 		HttpClient client = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder()
@@ -27,15 +30,28 @@ public class PrincipalComBusca {
 		// O próximo passo para ver o resultado da API:
 		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-		//System.out.println(response.body());
-		
         String json = response.body();
         System.out.println(json);
-		
-        Gson gson = new Gson();
-        Titulo meuTitulo = gson.fromJson(json, Titulo.class);
-        System.out.println("Título: " + meuTitulo.getNome());
+        
+       // Gson gson = new Gson();
+       // TituloOmdb meuTitulo = gson.fromJson(json, TituloOmdb.class);
+       // System.out.println(meuTitulo);
+        
+     // CÓDIGO DE EXEMPLO DA DOCUMENTAÇÃO GSON
 
+     // Configura o Gson para entender que as chaves no JSON (como "Title") 
+     // devem ser mapeadas para os atributos Java seguindo o padrão UpperCamelCase
+     Gson gson = new GsonBuilder()
+             .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+             .create();
+
+     // Aqui está a: transformamos a String 'json' em um objeto 'TituloOmdb'
+     TituloOmdb meuTituloOmdb = gson.fromJson(json, TituloOmdb.class);
+     System.out.println("Título convertido: " + meuTituloOmdb);
+     Titulo meuTitulo = new Titulo(meuTituloOmdb);
+     System.out.println("Titulo já convertido");
+     System.out.println(meuTitulo);
+        
 	}	
 	
 }
