@@ -2,11 +2,11 @@ package br.com.alura.screenmatch.modelos;
 
 import com.google.gson.annotations.SerializedName;
 
+import br.com.alura.screenmatch.excecao.ErroDeConversaoDeAnoException;
+
 public class Titulo implements Comparable<Titulo> {
 	
-	@SerializedName("Title")
     private String nome;
-	@SerializedName("Year")
     private int anoDeLancamento;
     private boolean incluidoNoPlano;
     private double somaDasAvaliacoes;
@@ -16,6 +16,12 @@ public class Titulo implements Comparable<Titulo> {
     public Titulo(TituloOmdb meuTituloOmdb) {
         this.nome = meuTituloOmdb.Title();
         this.anoDeLancamento = Integer.valueOf(meuTituloOmdb.Year());
+        
+        if(meuTituloOmdb.Year().length() > 4) {
+            throw new ErroDeConversaoDeAnoException("Não consegui converter o ano " +
+                    "porque tem mais de 04 caracteres.");
+      }
+        
         this.duracaoEmMinutos = Integer.valueOf(meuTituloOmdb.Runtime().substring(0, 2));
     }
     
@@ -83,9 +89,9 @@ public class Titulo implements Comparable<Titulo> {
 	
     @Override
     public String toString() {
-        return "nome='" + nome + '\'' +
+        return "(nome='" + nome + '\'' +
                 ", anoDeLancamento=" + anoDeLancamento + "," +
-                " duração " + duracaoEmMinutos;
+                " duração " + duracaoEmMinutos +")";
 
     }
 }
